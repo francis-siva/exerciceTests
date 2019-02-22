@@ -5,18 +5,18 @@ import uuid from 'uuid/v4';
 import initIfFileIfMissing from '../utils/initIfFileMissing';
 
 const getBooks = (req, res) => {
-  res.status(200).send({ message: 'route non activé' });
+  // res.status(200).send({ message: 'route non activé' });
 
-  // const pathBooks = path.join(__dirname, '../data/books.json');
-  // fs.readFile(pathBooks, 'utf8', (err, data) => {
-  //   if (err) {
-  //     console.log(err);
-  //     res.status(400).send({ message: 'error fetching books' });
-  //   } else {
-  //     console.log(data);
-  //     res.status(200).send(JSON.parse(data));
-  //   }
-  // });
+  const pathBooks = path.join(__dirname, '../data/books.json');
+  fs.readFile(pathBooks, 'utf8', (err, data) => {
+    if (err) {
+      console.log(err);
+      res.status(400).send({ message: 'error fetching books' });
+    } else {
+      console.log(data);
+      res.status(200).send(JSON.parse(data));
+    }
+  });
 };
 
 /*
@@ -67,26 +67,26 @@ const postBook = (req, res) => {
  * GET /book/:id route to retrieve a book given its id.
  */
 const getBook = (req, res) => {
-  res.status(200).send({ message: 'route non activé' });
+  // res.status(200).send({ message: 'route non activé' });
 
-  // const pathBooks = path.join(__dirname, '../data/books.json');
-  // fs.readFile(pathBooks, 'utf8', (err, data) => {
-  //   if (err) {
-  //     console.log(err);
-  //     res.status(400).send({ message: 'an Error occured' });
-  //   } else {
-  //     let obj = JSON.parse(data); //now it an object
-  //     const book = obj.books.find(element => {
-  //       if (element.id === req.params.id) return element;
-  //     });
-  //     if (!book) {
-  //       return res.status(400).send({ message: 'book does not exist' });
-  //     }
-  //     console.log(req.params.id);
-  //     console.log(book);
-  //     res.status(200).send({ message: 'book fetched', book });
-  //   }
-  // });
+  const pathBooks = path.join(__dirname, '../data/books.json');
+  fs.readFile(pathBooks, 'utf8', (err, data) => {
+    if (err) {
+      console.log(err);
+      res.status(400).send({ message: 'an Error occured' });
+    } else {
+      let obj = JSON.parse(data); //now it an object
+      const book = obj.books.find(element => {
+        if (element.id === req.params.id) return element;
+      });
+      if (!book) {
+        return res.status(400).send({ message: 'book does not exist' });
+      }
+      console.log(req.params.id);
+      console.log(book);
+      res.status(200).send({ message: 'book fetched', book });
+    }
+  });
 };
 
 /*
