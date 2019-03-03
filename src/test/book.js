@@ -186,6 +186,20 @@ describe('Test intégration (Mocked Database)', () => {
                 done();
             });
     })
+
+    /** Test de suppression book à l'aide d'un id **/
+    it('should delete a book', done => {
+        chai
+            .request(server)
+            .delete('/book/0db0b43e-dddb-47ad-9b4a-e5fe9ec7c2a9')
+            .end((err, res) => {
+                if (err) console.log(err);
+                expect(res).to.have.status(200);
+                expect(res.body).to.be.a('object');
+                expect(res.body.message).to.equal('book successfully deleted');
+                done();
+            });
+    })
 })
 
 
