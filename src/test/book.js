@@ -22,7 +22,7 @@ chai.use(chaiAsPromised);
 //     books: []
 // };
 
-describe('Test sur une requête GET /book', function() {
+describe('Test sur une requête GET /book', () => {
     let initialStructure = {
         books: []
     };
@@ -79,7 +79,7 @@ describe('Test sur une requête GET /book', function() {
     })*/
 });
 
-describe('Test sur une requête POST /book', function () {
+describe('Test sur une requête POST /book', () => {
     
     let initialStructure = {
         books: []
@@ -106,11 +106,35 @@ describe('Test sur une requête POST /book', function () {
             .request(server)
             .post('/book')
             .end((err, res) => {
-                console.log("Here .. ");
+                console.log("Here req: /book.. ");
                 if (err) console.log(err);
-                console.log("Here .. ", res.body);
+                console.log("Here res.body: ", res.body);
                 expect(res.body.message).to.equal("book successfully added");                
                 done();
             });
     })
+
+    /** Ajout d'un book avec les parmètres title, years, pages depuis la route /book en POST **/
+    it('shoud add a book with full keys', done => {
+        chai
+        .request(server)
+        .post('/book')
+        .send({
+            "title": "JavaScript pour les Nuls",
+            "years": "2016",
+            "pages": "511"
+        })
+        .end((err, res) => {
+            if (err) console.log('err (value): ' + err);
+            console.log('res (value): ' + res);
+            expect(res).to.have.status(200);
+            expect(res.body).to.be.a('object');
+            expect(res.body.message).to.equal('book successfully added');
+            done();
+        });
+    })
 });
+
+
+
+
