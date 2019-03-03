@@ -202,4 +202,78 @@ describe('Test intégration (Mocked Database)', () => {
     })
 })
 
+describe('Test unitaire (simulation ok)', () => {
+    beforeEach(() => {
+        nock.cleanAll()
+    })
 
+    it('should send a http status equal to 200 and an array type', done => {
+        let emptyBooks = {
+            books: []
+        }
+        nock("http://localhost:8080")
+        .get('/book')
+        .reply(200, emptyBooks)
+        chai
+            .request('http://localhost:8080')
+            .get('/book')
+            .end((err, res) => {
+                if(err) console.log(err);
+                expect(res).to.have.status(200);
+                expect(res.body).to.be.a('object');
+                expect(res.body.books).to.be.a('array');
+                expect(res.body.books.length).to.equal(0);
+                done();
+            });
+    })
+
+    it('should Add a book for POST && send http status 200 && send an message', done => {
+        let message = {
+            message: 'book successfully added'
+        }
+        nock("http://localhost:8080")
+            .post('/book')
+            .reply(200, message)
+        chai
+            .request('http://localhost:8080')
+            .post('/book')
+            .send({
+                "id": "55b7d315-1a5f-4b13-a665-c382a6c71756",
+                "title": "Oui-Oui contre Dominique Strauss-Kahn",
+                "years": "2015",
+                "pages": "650"
+            })
+            .end((err, res) => {
+                if (err) console.log(err);
+                expect(res).to.have.status(200);
+                expect(res.body).to.be.a('object');
+                expect(res.body.message).to.be.a('string');
+                expect(res.body.message).to.equal('book successfully added');
+                done();
+            });
+    })
+
+    it('should for put send http status 200 and send an message', done => {
+        let message = {
+            message: 'book successfully updated'
+        }
+        nock("http://localhost:8080")
+            .put('/book/55b7d315-1a5f-4b13-a665-c382a6c71756')
+            .reply(200, message)
+        chai
+            .request('http://localhost:8080')
+            .put('/book/55b7d315-1a5f-4b13-a665-c382a6c71756')
+            .send({
+                "pages": "650"
+            })
+            .end((err, res) => {
+                if (err) console.log(err);
+                expect(res).to.have.status(200);
+                expect(res.body).to.be.a('object');
+                expect(res.body.message).to.be.a('string');
+                expect(res.body.message).to.equal('book successfully updated');
+                done();
+            });
+    })
+
+})
