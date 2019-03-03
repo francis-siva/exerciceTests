@@ -128,40 +128,40 @@ const deleteBook = (req, res) => {
  * PUT /book/:id to updatea a book given its id
  */
 const updateBook = (req, res) => {
-  res.status(200).send({ message: 'route non activé' });
+  // res.status(200).send({ message: 'route non activé' });
 
-  // const pathBooks = path.join(__dirname, '../data/books.json');
-  // fs.readFile(pathBooks, 'utf8', (err, data) => {
-  //   if (err) {
-  //     console.log(err);
-  //     res.status(400).send({ message: 'an Error occured' });
-  //   } else {
-  //     let obj = JSON.parse(data); //now it an object
-  //     const bookIndex = obj.books.findIndex(element => {
-  //       if (element.id === req.params.id) {
-  //         return element;
-  //       }
-  //     });
-  //     console.log(bookIndex);
-  //     if (bookIndex === -1) {
-  //       return res.status(400).send({ message: 'book does not exist' });
-  //     }
-  //     obj.books.splice(bookIndex, 1, {
-  //       ...obj.books[bookIndex],
-  //       title: req.body.title,
-  //       years: req.body.years,
-  //       pages: req.body.pages
-  //     });
-  //     const json = JSON.stringify(obj);
-  //     fs.writeFile(pathBooks, json, 'utf8', (err, data) => {
-  //       if (err) {
-  //         return res.status(400).send({ message: 'error updating the book' });
-  //       } else {
-  //         return res.status(200).send({ message: 'book successfully updated' });
-  //       }
-  //     });
-  //   }
-  // });
+  const pathBooks = path.join(__dirname, '../data/books.json');
+  fs.readFile(pathBooks, 'utf8', (err, data) => {
+    if (err) {
+      console.log(err);
+      res.status(400).send({ message: 'an Error occured' });
+    } else {
+      let obj = JSON.parse(data); //now it an object
+      const bookIndex = obj.books.findIndex(element => {
+        if (element.id === req.params.id) {
+          return element;
+        }
+      });
+      console.log(bookIndex);
+      if (bookIndex === -1) {
+        return res.status(400).send({ message: 'book does not exist' });
+      }
+      obj.books.splice(bookIndex, 1, {
+        ...obj.books[bookIndex],
+        title: req.body.title,
+        years: req.body.years,
+        pages: req.body.pages
+      });
+      const json = JSON.stringify(obj);
+      fs.writeFile(pathBooks, json, 'utf8', (err, data) => {
+        if (err) {
+          return res.status(400).send({ message: 'error updating the book' });
+        } else {
+          return res.status(200).send({ message: 'book successfully updated' });
+        }
+      });
+    }
+  });
 };
 
 //export all the functions
